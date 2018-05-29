@@ -1,0 +1,71 @@
+#!/usr/bin/expect
+if { $argc != 4 } {
+        puts "Usage: ./build-key.expect name client email depart"
+        exit
+}
+set name [lindex $argv 0];
+set client [lindex $argv 1];
+set email [lindex $argv 2];
+set depart [lindex $argv 3];
+
+set timeout 10
+
+spawn ./build-key $client
+
+expect {
+    "./pkitool: No such file or directory" {
+        puts "env is not Ok!\n";
+        exit
+    }
+
+    "Country Name " {
+        send "\n";
+        exp_continue
+    }
+
+    "State or Province Name " {
+        send "\n";
+        exp_continue
+    }
+
+    "Locality Name " {
+        send "\n";
+        exp_continue
+    }
+
+    "Organization Name " {
+        send "\n";
+        exp_continue
+    }
+
+    "Common Name " {
+        send "$client\n";
+        exp_continue
+    }
+
+    "Organizational Unit Name " {
+        send "$depart\n";
+        exp_continue
+    }
+
+    "Email Address " {
+        send "$email\n";
+        exp_continue
+    }
+
+    -re "Name \\\[(.+)]" {
+        send "$name\n";
+        exp_continue
+    }
+
+    -re "\\\[]:" {
+        send "\n";
+        exp_continue
+    }
+    -re "\\\[y/n]" {
+        send "y\n";
+        exp_continue
+    }
+
+    eof { puts "Job Ok!\n" }
+}

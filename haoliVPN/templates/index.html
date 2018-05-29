@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}OpenVPN-Admin{% endblock %}
+
+{% block page_content %}
+
+    {{ super() }}
+
+    <!-- Users grid -->
+    <div class="block-grid row" id="user-grid">
+        <div class="alert alert-info" role="alert">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            欢迎来到 HaoliVPN 管理系统
+        </div>
+        <div class="row">
+            {% if can_admin(permission.USER_MANAGE) %}
+                <div class="col-xs-12 col-sm-6">
+                    <a class="btn btn-primary home-quick-link" href="/user_list">VPN用户列表</a>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <a class="btn btn-primary home-quick-link" href="add_user">添加VPN用户</a>
+                </div>
+            {% endif %}
+            {% if can_admin(permission.LOG_MANAGE) %}
+                <div class="col-xs-12 col-sm-6">
+                    <a class="btn btn-info home-quick-link" href="/loglist">用户日志</a>
+                </div>
+            {% endif %}
+            {% if can_admin(permission.USER_MANAGE) %}
+                <div class="col-xs-12 col-sm-6">
+                    <a class="btn btn-default home-quick-link" href="/process">进程管理</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

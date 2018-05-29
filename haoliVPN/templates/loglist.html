@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% import 'pagination.html' as page %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/bootstrap-datepicker3.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block title %}OpenVPN-Admin{% endblock %}
+
+{% block page_content %}
+
+    {{ super() }}
+
+    <!-- Users grid -->
+    <div class="block-grid row" id="user-grid">
+        <h4>
+            用户连接日志
+        </h4>
+
+        <nav class="navbar navbar-default" role="navigation">
+            <form class="navbar-form navbar-left" role="search" method="get" id="form">
+                <div class="form-group navbar-left" style="padding: 10px">
+                    连接日期
+                    <input type="text" class="form-control" id="con_startdate" name="startdate">
+                    ~
+                    <input type="text" class="form-control" id="con_enddate" name="enddate">
+                </div>
+                <div class="form-group navbar-left" style="padding:10px">
+                    状态
+                    <select name="status" class="form-control">
+                        <option value="">全部</option>
+                        <option value="1">连接中</option>
+                        <option value="0">已断开</option>
+                    </select>
+                </div>
+                <div class="form-group navbar-left" style="padding:10px">
+                    搜索项
+                    <select name="title" class="form-control">
+                        <option value="name">用户名</option>
+                        <option value="client">客户端</option>
+                    </select>
+                    <input class="form-control" type="text" placeholder="Search" name="keyword">
+                    <button class="btn btn-default" type="submit">搜索</button>
+                </div>
+            </form>
+        </nav>
+
+        <div class="responsive-table">
+            <div class="scrollable-area">
+                <table id="table-logs" class="table table-bordered table-hover" style="margin: 0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>客户端</th>
+                        <th>Trusted IP</th>
+                        <th>Trusted Port</th>
+                        <th>Remote IP</th>
+                        <th>status</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Received</th>
+                        <th>Sent</th>
+                    </tr>
+                    </thead>
+                    {% for item in loglist %}
+                        <tr>
+                            <td>{{ item.Log.id }}</td>
+                            <td>{{ item.User.name }}</td>
+                            <td>{{ item.Log.client }}</td>
+                            <td>{{ item.Log.trust_ip or "" }}</td>
+                            <td>{{ item.Log.trust_port or "" }}</td>
+                            <td>{{ item.Log.remote_ip or "" }}</td>
+                            <td>{% if item.Log.status == 1 %}连接中{% else %}已断开{% endif %}</td>
+                            <td>
+                                {% if item.Log.start_time %}
+                                    {{ moment(item.Log.start_time).format('YYYY-MM-DD HH:mm:ss') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.Log.end_time %}
+                                    {{ moment(item.Log.end_time).format('YYYY-MM-DD HH:mm:ss') }}
+                                {% endif %}
+                            </td>
+                            <td>{{ item.Log.received or "" }}</td>
+                            <td>{{ item.Log.sent or "" }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center">无相应记录</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% if pagination %}
+            {{ page.pagination_widget(pagination, 'firstApp_app.loglist', qs) }}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $('#con_startdate').datepicker({
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: true,
+            format: "yyyy-mm-dd",
+        });
+        $('#con_enddate').datepicker({
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: true,
+            format: "yyyy-mm-dd",
+        });
+    </script>
+{% endblock %}

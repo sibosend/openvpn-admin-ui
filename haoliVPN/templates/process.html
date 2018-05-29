@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}OpenVPN-Admin{% endblock %}
+
+{% block page_content %}
+
+{{ super() }}
+
+<!-- process grid -->
+<div class="block-grid row" id="user-grid">
+    <h4>
+        进程列表
+    </h4>
+
+    <div class="responsive-table">
+        <div class="scrollable-area">
+            <table id="table-users" class="table table-bordered table-hover" style="margin: 0">
+                <thead>
+                <tr>
+                    <th>进程名</th>
+                    <th>状态</th>
+                    <th>log</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>OpenVPN scheduler</td>
+                    <td>
+                        {% if not scheduler %}
+                            未运行
+                        {% elif number == 1%}
+                            正常运行
+                        {% else %}
+                            运行异常
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if scheduler and number == 1 %}
+                        <div>
+                            <i class="glyphicon glyphicon-download"></i>
+                            <a id="down_log" title="下载运行日志" href="/process/log"
+                               style="display: inline-block; line-height: 18px"; height="20px">RunningLog</a>
+                            </a>
+                        </div>
+                        {% elif scheduler %}
+                        <div>
+                            <i class="glyphicon glyphicon-download"></i>
+                            <a id="down_error" title="下载错误日志" href="/process/error"
+                               style="display: inline-block; line-height: 18px"; height="20px">ErrorLog</a>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

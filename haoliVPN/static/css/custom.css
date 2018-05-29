@@ -1,0 +1,39 @@
+.action {
+    cursor: pointer;
+    margin: 0 4px;
+}
+
+.block-grid {
+    margin: 0 20px;
+}
+
+.btn .glyphicon {
+    top: 2px;
+}
+
+.signed {
+    margin-top: 20px;
+}
+
+.responsive-table {
+    position: relative;
+    overflow: hidden;
+}
+.scrollable-area {
+    width: 100%;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+label.error {
+    color: #a94442;
+}
+
+.home-quick-link {
+    width: 100%;
+    height: 90px;
+    line-height: 90px;
+    padding: 0;
+    font-size: 17px;
+    margin: 20px 0;
+}

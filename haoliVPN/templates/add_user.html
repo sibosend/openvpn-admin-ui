@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}OpenVPN-Admin{% endblock %}
+
+{% block page_content %}
+
+    {{ super() }}
+
+    <!-- Users grid -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">添加用户</h4>
+        </div>
+        <form method="POST" name="addUserForm" id="addUserForm" action="/add_user">
+            <div class="panel-body" style="padding:32px 0">
+                {{ form.hidden_tag() }}
+                <div class="form-group clearfix {% if form.name.errors %} has-error {% endif %}">
+                    {{ form.name.label(class="control-label col-sm-2 text-right") }}
+                    <div class="col-sm-5">
+                        {{ form.name(class="form-control") }}
+                    </div>
+                    <p class="col-sm-5 help-block">
+                        {{ form.name.errors[0] }}
+                </div>
+                <div class="form-group clearfix {% if form.depart.errors %} has-error {% endif %}">
+                    {{ form.depart.label(class="control-label col-sm-2 text-right") }}
+                    <div class="col-sm-5">
+                        {{ form.depart(class="form-control") }}
+                    </div>
+                    <p class="col-sm-5 help-block">
+                        {{ form.depart.errors[0] }}
+                </div>
+                <div class="form-group clearfix {% if form.email.errors %} has-error {% endif %}">
+                    {{ form.email.label(class="control-label col-sm-2 text-right") }}
+                    <div class="col-sm-5">
+                        {{ form.email(class="form-control") }}
+                    </div>
+                    <p class="col-sm-5 help-block">
+                        {{ form.email.errors[0] }}
+                </div>
+
+                <div class="form-group clearfix" style="margin-top:24px">
+                    <div class="col-sm-5 col-sm-offset-2 text-center">
+                        <input type="reset" class="btn btn-default" value="Reset"/>
+                        <input type="submit" class="btn btn-primary" id="modal-user-add-save" value="Save"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#addUserForm").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 16
+                    },
+                    depart: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 64
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+if { $argc != 1 } {
+        puts "Usage: ./revoke.expect client"
+        exit
+}
+set client [lindex $argv 0];
+
+set timeout 10
+
+spawn ./revoke-full $client
+
+expect {
+    "Please source the vars script first" {
+        puts "env is not Ok!\n";
+        exit
+    }
+    "unable to load certificate" {
+        puts "client is error!\n"
+        exit
+    }
+    "certificate revoked" {
+        exp_continue
+    }
+    eof { puts "Job Ok!\n" }
+}

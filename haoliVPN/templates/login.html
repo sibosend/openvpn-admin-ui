@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}OpenVPN-Admin{% endblock %}
+
+{% block page_content %}
+
+    {{ super() }}
+
+    <!-- Login Form -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">登录</h4>
+        </div>
+        <form class="form-horizontal" method="POST" name="loginForm" id="loginForm" action="/login">
+            <div class="panel-body" style="padding:32px 0">
+                {{ form.hidden_tag() }}
+                <div class="form-group clearfix {% if form.username.errors %} has-error {% endif %}">
+                    {{ form.username.label(class="control-label col-sm-3 text-right") }}
+                    <div class="col-sm-6">
+                        {{ form.username(class="form-control") }}
+                        <p class="help-block">
+                            {{ form.username.errors[0] }}</p>
+                    </div>
+                </div>
+                <div class="form-group clearfix {% if form.password.errors %} has-error {% endif %}">
+                    {{ form.password.label(class="control-label col-sm-3 text-right") }}
+                    <div class="col-sm-6">
+                        {{ form.password(class="form-control") }}
+                        <p class="help-block">
+                            {{ form.password.errors[0] }}</p>
+                    </div>
+                </div>
+
+                <div class="form-group clearfix" style="margin-top:24px">
+                    <div class="col-sm-6 col-sm-offset-3 text-center">
+                        <input type="submit" class="btn btn-primary" id="modal-user-add-save" value="Login"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#loginForm").validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 64
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.css('display', 'block');
+                }
+            });
+        });
+    </script>
+{% endblock %}

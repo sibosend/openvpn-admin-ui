@@ -1,0 +1,102 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static',filename = 'favicon.ico') }}" type='image/x-icon'/>
+    <link rel="icon" href="{{ url_for('static',filename = 'favicon.ico') }}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/custom.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block title %}HaoliVPN-Admin{% endblock %}
+
+{% block navbar %}
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">haoliVPN Admin</a>
+                {% if current_user.is_authenticated %}
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".dropdown-menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        {% if can_admin(permission.USER_MANAGE) %}
+                            <li><a href="/">用户列表</a></li>
+                        {% endif %}
+                        {% if can_admin(permission.LOG_MANAGE) %}
+                            <li><a href="/loglist">用户日志</a></li>
+                        {% endif %}
+                        {% if can_admin(permission.HELP) %}
+                            <li><a href="/help">帮助中心</a></li>
+                        {% endif %}
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout">退出登录</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+            {% if current_user.is_authenticated %}
+                <div class="navbar-collapse collapse navbar-right" style="padding: 0">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" style="cursor: pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ current_user.name }}</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {% if can_admin(permission.USER_MANAGE) %}
+                                    <li><a href="/">用户列表</a></li>
+                                {% endif %}
+                                {% if can_admin(permission.LOG_MANAGE) %}
+                                    <li><a href="/loglist">用户日志</a></li>
+                                {% endif %}
+                                {% if can_admin(permission.HELP) %}
+                                    <li><a href="/help">帮助中心</a></li>
+                                {% endif %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+
+{#            <div class="navbar-collapse collapse navbar-right">#}
+{#                <ul class="nav navbar-nav">#}
+{#                    <li><a href="/">用户列表</a></li>#}
+{#                    <li><a href="/loglist">用户日志</a></li>#}
+{#                    <li><a href="/help">帮助中心</a></li>#}
+{#                    <li><a href="/logout">退出登录</a></li>#}
+{#                </ul>#}
+{#            </div>#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {% block page_content %}
+        <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'message' %}
+                        <div class="alert alert-warning" role="alert">
+                    {% else %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                    {% endif %}
+                {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    {% endblock %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment(local_js='static/js/moment.min.js') }}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
+{% endblock %}
+
