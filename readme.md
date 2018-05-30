@@ -1,4 +1,4 @@
-﻿# OpenVPN管理系统
+# OpenVPN管理系统
 这是用python flask sqlite实现的一个OpenVPN客户端管理系统
 
 ## Web Installation
@@ -36,7 +36,7 @@ pip2.7 install flask-bootstrap flask-script flask-moment pyminizip flask_wtf fla
 include        uwsgi_params;
 
 uwsgi_param UWSGI_PYHOME /path/to/dir/haoliVPNEnv;
-uwsgi_param UWSGI_CHDIR  /path/to/dir;
+uwsgi_param UWSGI_CHDIR  /path/to/dir;
 
 uwsgi_param UWSGI_SCRIPT run:app;
 uwsgi_pass  unix:/path/to/dir/haoliVPN.sock;
