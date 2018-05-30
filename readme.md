@@ -57,12 +57,14 @@ config.py文件中LDAP_ENABLED设为True
 ovpn文件区分windows和MacOS平台，放在installation文件夹下的ovpn目录
 
 ## server端Log配置
+````
 ./connect.sh ./disconnect.sh ./connect.py 可执行权限
 openvpn服务端配置文件增加下面配置：
 client-connect /path/to/dir/haoliVPN/connect.sh
 client-disconnect /path/to/dir/haoliVPN/disconnect.sh
+````
 
-##自动发布流程
+## 自动发布流程
 * 安装python fabric工具
 * 工程根目录下执行:
     * development环境: fab development deploy_to_remote
