@@ -1,6 +1,12 @@
 # OpenVPN管理系统
 这是用python flask sqlite实现的一个OpenVPN客户端管理系统
 
+## UI效果
+![首页](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/1.png)
+![user list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/2.png)
+![user add](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/3.png)
+![log list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/4.png)
+
 ## Web Installation
 
 ### 启用virtualenv
@@ -77,9 +83,3 @@ client-disconnect /path/to/dir/haoliVPN/disconnect.sh
         2. produnction/development，指定文件部署环境host, tag,指定git标签和当前版本
 
 * server端Log配置,请手动配置
-
-## UI效果
-![首页](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/1.png)
-![user list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/2.png)
-![user add](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/3.png)
-![log list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/4.png)
