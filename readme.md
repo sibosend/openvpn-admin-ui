@@ -25,9 +25,9 @@ pip2.7 install flask-bootstrap flask-script flask-moment pyminizip flask_wtf fla
 ./db_migrate.py 更新数据库
 ````
 
-### uwsgi
+### uwsgi
 ````
-将工程中的uwsgi-vpn-admin放到/etc/init.d目录，/etc/init.d/uwsgi-vpn-admin start启动uwsgi
+将工程中的uwsgi-vpn-admin放到/etc/init.d目录，/etc/init.d/uwsgi-vpn-admin start启动uwsgi
 
 /etc/init.d/uwsgi-vpn-admin start|stop|status|restart
 ````
