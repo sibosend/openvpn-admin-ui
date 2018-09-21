@@ -1,21 +1,30 @@
-# OpenVPN管理系统
-这是用python flask sqlite实现的一个OpenVPN客户端管理系统
+# OpenVPN Management System
+This is an OpenVPN client management system implemented with python2.7, flask and sqlite.
 
-## UI效果
-![首页](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/1.png)
-![user list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/2.png)
-![user add](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/3.png)
-![log list](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/4.png)
+## Web UI Implementation
+Index Page:
+![Index](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/1.png)
 
-## Web Installation
+Client List Page:
+![User List](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/2.png)
 
-### 启用virtualenv
+Add Client Page:
+![User Add](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/3.png)
+
+Log List Page:
+![Log List](https://github.com/sibosend/openvpn-admin-ui/raw/master/screenshots/4.png)
+
+## Project Installation
+
+### Install Python 2.7
+ 
+### Use Virtualenv
 ````
 # virtualenv haoliVPNEnv
 # source haoliVPNEnv/bin/activate
 ````
 
-### 安装依赖的组件
+### Install dependent components
 ````
 yum -y install expect
 ````
@@ -25,19 +34,20 @@ pip2.7 install flask
 pip2.7 install flask-bootstrap flask-script flask-moment pyminizip flask_wtf flask_sqlalchemy sqlalchemy-migrate flask-mail flask-login flask-ldap-login python-ldap
 ````
 
-### sqlite数据库
+### sqlite
 ````
-./db_create.py 创建数据库
-./db_migrate.py 更新数据库
+./db_create.py      //Create Database
+./db_migrate.py     //Update Database
 ````
 
 ### uwsgi
 ````
-将工程中的uwsgi-vpn-admin放到/etc/init.d目录，/etc/init.d/uwsgi-vpn-admin start启动uwsgi
+Put the uwsgi-vpn-admin file into /etc/init.d directory(Linux boot script directory).
+And start uwsgi with command '/etc/init.d/uwsgi-vpn-admin start'
 
 /etc/init.d/uwsgi-vpn-admin start|stop|status|restart
 ````
-### nginx/apache web服务器配置
+### nginx/apache web server configuration
 ````
 include        uwsgi_params;
 
@@ -48,38 +58,46 @@ uwsgi_param UWSGI_SCRIPT run:app;
 uwsgi_pass  unix:/path/to/dir/haoliVPN.sock;
 ````
 
-### 启用openldap
-````v
-config.py文件中LDAP_ENABLED设为True
+### enable openldap
+````
+config.py: 
+    1. LDAP_ENABLED = True
+    2. LDAP = {........}, Configure URL, BIND_DN/BIND_PASSORD, MAP, etc.
+    
 ````
 
-## 后台运行脚本：
+## Run these scripts in the background
 ````
-./scheduler.py start/stop
+./scheduler.py start    //Generate client key, revoke, synchronization between index.txt and database.
 
-./scheduler.py: 后台生成client key，revoke, index.txt与数据库同步等
-````
-## ovpn文件
-ovpn文件区分windows和MacOS平台，放在installation文件夹下的ovpn目录
+./scheduler.py stop     //stop
 
-## server端Log配置
 ````
-./connect.sh ./disconnect.sh ./connect.py 可执行权限
-openvpn服务端配置文件增加下面配置：
+## ovpn file
+The ovpn files contain windows and MacOS platforms, and is placed in the installation/ovpn directory.
+
+## OpenVPN Server Log configuration
+````
+chmod +x ./connect.sh
+chmod +x ./disconnect.sh
+chmod +x ./connect.py
+
+Add the following configuration at the end of OpenVPN Server config file：
 client-connect /path/to/dir/haoliVPN/connect.sh
 client-disconnect /path/to/dir/haoliVPN/disconnect.sh
 ````
 
-## 自动发布流程
-* 安装python fabric工具
-* 工程根目录下执行:
-    * development环境: fab development deploy_to_remote
-    * production环境: fab production deploy_to_remote:tag=vx.x.x
+## Automatic Deploy
+* Intall Fabric
+* Run the following scripts under the project root directory:
+    * development env: fab development deploy_to_remote
+    * production env: fab production deploy_to_remote:tag=vx.x.x
 
-    备注：
+    remark:
 
-        1. 执行fab命令前请检查文件的host配置
+        1. Please check the host configuration of the fabfile.py file before running the fab scripts.
 
-        2. produnction/development，指定文件部署环境host, tag,指定git标签和当前版本
+        2. produnction/development: specifies which environment to deploy
+           tag=vx.x.x: specifies the git tag, the version to deploy
 
-* server端Log配置,请手动配置
+* OpenVPN Server Log configuration must be manually configured
