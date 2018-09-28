@@ -9,7 +9,7 @@
     <!-- Users grid -->
     <div class="block-grid row" id="user-grid">
         <h4>
-            用户列表 <a class="btn btn-success btn-xs" href="/add_user"><span class="glyphicon glyphicon-plus"></span></a>
+            User List <a class="btn btn-success btn-xs" href="/add_user"><span class="glyphicon glyphicon-plus"></span></a>
         </h4>
 
         <div class="responsive-table">
@@ -18,15 +18,15 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>姓名</th>
-                        <th>部门</th>
-                        <th>客户端</th>
-                        <th>邮箱</th>
-                        <th>添加方式</th>
-                        <th>添加时间</th>
-                        <th>状态</th>
-                        <th>连接状态</th>
-                        <th>操作</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Source</th>
+                        <th>Add Time</th>
+                        <th>Status</th>
+                        <th>Connect Status</th>
+                        <th>Operation</th>
                     </tr>
                     </thead>
                     {% for user in users %}
@@ -39,10 +39,10 @@
                             <td>{{ user.type }}</td>
                             <td>{{ moment(user.addtime).format('YYYY-MM-DD HH:mm') }}</td>
                             <td>{{ user_status[user.status] }}</td>
-                            <td>{% if user.online == 1%}已连接{% else %}未连接{% endif %}</td>
+                            <td>{% if user.online == 1%}Connected{% else %}Disconnected{% endif %}</td>
                             <td>
                                 {% if user.status == 1 and user.send_status == 0 %}
-                                    <a class="glyphicon glyphicon-envelope action" id="send" title="发送配置文件到邮箱"
+                                    <a class="glyphicon glyphicon-envelope action" id="send" title="send to email"
                                        onclick="sendEmail('{{ user.client }}')"></a>
                                 {% endif %}
 {#                                {% if user.status == 1 and user.load_status == 1 %}#}
@@ -50,15 +50,15 @@
 {#                                       onclick="downloadClient('{{ user.client }}')"></a>#}
 {#                                {% endif %}#}
                                 {% if user.status == 1 %}
-                                    <a class="glyphicon glyphicon-remove action" id="delete" title="删除此用户"
+                                    <a class="glyphicon glyphicon-remove action" id="delete" title="delete"
                                        onclick="deleteUser('{{ user.client }}')"></a>
                                 {% endif %}
-                                <a class="glyphicon glyphicon-tags action" id="tags" title="连接记录" href="/loglist?title=client&keyword={{ user.client }}"></a>
+                                <a class="glyphicon glyphicon-tags action" id="tags" title="log" href="/loglist?title=client&keyword={{ user.client }}"></a>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="10" class="text-center">无相应记录</td>
+                            <td colspan="10" class="text-center">No Records</td>
                         </tr>
                     {% endfor %}
                 </table>

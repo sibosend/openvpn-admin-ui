@@ -9,13 +9,13 @@ from flask import current_app
 import ldap
 
 class AddUserForm(FlaskForm):
-    name = StringField(u'姓名', [validators.required(), validators.Length(min=2, max=16)])
-    depart = StringField(u'部门', [validators.required(), validators.Length(min=4, max=64)])
-    email = StringField(u'邮件', [validators.required(), validators.Email()])
+    name = StringField('Name', [validators.required(), validators.Length(min=2, max=16)])
+    depart = StringField('Department', [validators.required(), validators.Length(min=4, max=64)])
+    email = StringField('E-mail', [validators.required(), validators.Email()])
 
 class LoginForm(FlaskForm):
-    username = StringField(u'用户名', [validators.required(), validators.length(min=2, max=20)])
-    password = PasswordField(u'密码', [validators.required(), validators.length(min=6, max=64)])
+    username = StringField('Name', [validators.required(), validators.length(min=2, max=20)])
+    password = PasswordField('Password', [validators.required(), validators.length(min=6, max=64)])
 
     def validate_ldap(self):
         # 'Validate the username/password data against ldap directory'

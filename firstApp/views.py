@@ -46,7 +46,7 @@ def index():
 @permission_required(Permission.USER_MANAGE)
 def user_list():
     # 获取所有user
-    user_status = [u'添加中', u'可用', u'添加失败', u'删除中', u'已删除', ]
+    user_status = ['Creating', 'Valid', 'Crate failed', u'Deleting', u'Deleted', ]
     users = User.query.filter(User.status != 4).order_by(User.id.desc()).all()
     return render_template('user.html', users=users, user_status=user_status)
 
@@ -87,10 +87,10 @@ def add_user():
             user = User(form.name.data, form.email.data, form.depart.data, client, 'web', 0)
             db.session.add(user)
             db.session.commit()
-            flash(u"添加用户成功！")
+            flash("Add user success！")
             return render_template('status.html')
         else:
-            flash(u'姓名和部门必须由字母或数字组成，请更改', 'danger')
+            flash('Name and department must only consist of letters or numbers, please modify them!', 'danger')
             return render_template('status.html')
 
     else:
@@ -110,9 +110,9 @@ def delete_user():
             db.session.commit()
             return json.dumps({'success': True})
         else:
-            return json.dumps({'success': False, 'lastlog': u'用户不存在'})
+            return json.dumps({'success': False, 'lastlog': 'User not exist!'})
     else:
-        return json.dumps({'success': False, 'lastlog': u'用户不存在'})
+        return json.dumps({'success': False, 'lastlog': 'User not exist!'})
 
 @firstApp_app.route('/send_email', methods=['POST'])
 @login_required
@@ -125,7 +125,7 @@ def send_email():
         db.session.commit()
         return json.dumps({'success': True})
     else:
-        return json.dumps({'success': False, 'lastlog': u'用户不存在'})
+        return json.dumps({'success': False, 'lastlog': 'User not exist!'})
 
 @firstApp_app.route('/loglist')
 @login_required
@@ -198,7 +198,7 @@ def process_log():
         respnse.headers["Content-Disposition"] = "attament; filename=scheduler.log"
         return respnse
     else:
-        flash(u'日志文件不存在', 'danger')
+        flash('Log file does not exist', 'danger')
         return render_template('status.html')
 
 @firstApp_app.route('/process/error')
@@ -211,5 +211,5 @@ def process_error():
         respnse.headers["Content-Disposition"] = "attament; filename=scheduler.error"
         return respnse
     else:
-        flash(u'日志文件不存在', 'danger')
+        flash('Log file does not exist', 'danger')
         return render_template('status.html')

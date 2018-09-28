@@ -16,33 +16,33 @@
     <!-- Users grid -->
     <div class="block-grid row" id="user-grid">
         <h4>
-            用户连接日志
+            User Connection Log
         </h4>
 
         <nav class="navbar navbar-default" role="navigation">
             <form class="navbar-form navbar-left" role="search" method="get" id="form">
                 <div class="form-group navbar-left" style="padding: 10px">
-                    连接日期
+                    Date
                     <input type="text" class="form-control" id="con_startdate" name="startdate">
                     ~
                     <input type="text" class="form-control" id="con_enddate" name="enddate">
                 </div>
                 <div class="form-group navbar-left" style="padding:10px">
-                    状态
+                    Status
                     <select name="status" class="form-control">
-                        <option value="">全部</option>
-                        <option value="1">连接中</option>
-                        <option value="0">已断开</option>
+                        <option value="">All</option>
+                        <option value="1">Connected</option>
+                        <option value="0">Disconnected</option>
                     </select>
                 </div>
                 <div class="form-group navbar-left" style="padding:10px">
-                    搜索项
+                    Term
                     <select name="title" class="form-control">
-                        <option value="name">用户名</option>
-                        <option value="client">客户端</option>
+                        <option value="name">Name</option>
+                        <option value="client">Client</option>
                     </select>
                     <input class="form-control" type="text" placeholder="Search" name="keyword">
-                    <button class="btn btn-default" type="submit">搜索</button>
+                    <button class="btn btn-default" type="submit">Search</button>
                 </div>
             </form>
         </nav>
@@ -53,8 +53,8 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>用户名</th>
-                        <th>客户端</th>
+                        <th>Name</th>
+                        <th>Client</th>
                         <th>Trusted IP</th>
                         <th>Trusted Port</th>
                         <th>Remote IP</th>
@@ -73,7 +73,7 @@
                             <td>{{ item.Log.trust_ip or "" }}</td>
                             <td>{{ item.Log.trust_port or "" }}</td>
                             <td>{{ item.Log.remote_ip or "" }}</td>
-                            <td>{% if item.Log.status == 1 %}连接中{% else %}已断开{% endif %}</td>
+                            <td>{% if item.Log.status == 1 %}Connected{% else %}Disconnected{% endif %}</td>
                             <td>
                                 {% if item.Log.start_time %}
                                     {{ moment(item.Log.start_time).format('YYYY-MM-DD HH:mm:ss') }}
@@ -89,7 +89,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="11" class="text-center">无相应记录</td>
+                            <td colspan="11" class="text-center">No Records</td>
                         </tr>
                     {% endfor %}
                 </table>
