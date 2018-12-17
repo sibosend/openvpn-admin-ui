@@ -23,11 +23,13 @@ from flask_mail import Message
 logger = None
 
 class Scheduler(object):
-    stdin_path = "/dev/null"
-    stdout_path = os.path.join(app.config['BASE_DIR'], "scheduler.stdout")
-    stderr_path =  os.path.join(app.config['BASE_DIR'], "scheduler.stderr")
-    pidfile_path =  app.config['SCHEDULER_PID']
-    pidfile_timeout = 5
+
+    def __init__(self):
+        self.stdin_path = "/dev/null"
+        self.stdout_path = os.path.join(app.config['BASE_DIR'], "scheduler.stdout")
+        self.stderr_path =  os.path.join(app.config['BASE_DIR'], "scheduler.stderr")
+        self.pidfile_path =  app.config['SCHEDULER_PID']
+        self.pidfile_timeout = 5
 
     # 同步
     def synchronize(self):
@@ -83,12 +85,12 @@ class Scheduler(object):
                         user.status = 1
                         user.send_status = 0
                         user.addtime = datetime.utcnow()
-                        db.session.commit()
-                        self.send_to_email(user)
+                        #db.session.commit()
+                        thread.start_new_thread(self.send_to_email,(user.client, user.email))
                     else:
                         user.status = 2
                         user.addtime = datetime.utcnow()
-                        db.session.commit()
+                        #db.session.commit()
                         logger.info(lastlog)
                         print lastlog
 
@@ -98,32 +100,32 @@ class Scheduler(object):
                     if status:
                         user.status = 4
                         user.deltime = datetime.utcnow()
-                        db.session.commit()
+                        #db.session.commit()
                         utils.zip_delete(user.client)
                     else:
                         user.status = 1
-                        db.session.commit()
+                        #db.session.commit()
                         logger.info(lastlog)
                         print lastlog
 
                 elif user.status == 1 and user.send_status == 1:
                     user.send_status = 0
-                    db.session.commit()
-                    self.send_to_email(user)
+                    #db.session.commit()
+                    thread.start_new_thread(self.send_to_email,(user.client, user.email))
 
                 else:
                     continue
+            db.session.commit()
 
-    def send_to_email(self, user):
-        logger.info("send to emali")
+    def send_to_email(self, client, email):
+        logger.info("send to email:" + email)
         with app.app_context():
-            status, output, password = utils.zip_compress(user.client)
+            status, output, password = utils.zip_compress(client)
             if status:
-                if user.email:
-                    msg = Message(u'OpenVPN连接', recipients = [user.email])
-                    msg.body = app.config['MAIL_SUBJECT'] % password
-                    with app.open_resource(output) as fp:
-                        msg.attach(user.client + '.zip', "application/zip", fp.read())
+                msg = Message(u'好利58 VPN连接', recipients = [email])
+                msg.body = app.config['MAIL_SUBJECT'] % password
+                with app.open_resource(output) as fp:
+                    msg.attach(client + '.zip', "application/zip", fp.read())
                     mail.send(msg)
             else:
                 logger.info(output)
@@ -165,3 +167,5 @@ class Scheduler(object):
 if __name__ == '__main__':
     run = DaemonRunner(Scheduler())
     run.do_action()
+    # scheduler = Scheduler()
+    # scheduler.run()

@@ -69,6 +69,8 @@ def buildKey(params):
         cmds = ' && '.join(current_app.config['CMD_BUILD_KEY']) + ' ' + ' '.join(params)
         p1 = subprocess.Popen(cmds, shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p1.communicate()
+        print(stdout)
+        print(stderr)
         p1.wait()
         returncode = p1.returncode
     except Exception, e:
@@ -92,6 +94,7 @@ def revoke(client):
         p1.wait()
         if p1.returncode == 0:
             stdout = subprocess.check_output(current_app.config['CMD_REVOKE_FILE_COPY'], shell=True)
+            print(stdout)
             if stdout:
                 returncode = 1
             else:
@@ -141,9 +144,9 @@ def zip_compress(client):
         if returncode == 0:
             return (True, file_dest, file_password)
         else:
-            return (False, output)
+            return (False, output, 500)
 
-    return ((False, 'user file not exist'))
+    return ((False, 'user file not exist', 404))
 
 
 # def zip_compress(client):
