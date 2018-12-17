@@ -46,7 +46,7 @@ def index():
 @permission_required(Permission.USER_MANAGE)
 def user_list():
     # 获取所有user
-    user_status = ['Creating', 'Valid', 'Crate failed', u'Deleting', u'Deleted', ]
+    user_status = ['Creating', 'Valid', 'Crate failed', 'Deleting', 'Deleted', ]
     users = User.query.filter(User.status != 4).order_by(User.id.desc()).all()
     return render_template('user.html', users=users, user_status=user_status)
 
@@ -87,7 +87,7 @@ def add_user():
             user = User(form.name.data, form.email.data, form.depart.data, client, 'web', 0)
             db.session.add(user)
             db.session.commit()
-            flash("Add user success！")
+            flash("Add user success!")
             return render_template('status.html')
         else:
             flash('Name and department must only consist of letters or numbers, please modify them!', 'danger')

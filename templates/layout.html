@@ -23,16 +23,13 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
                         {% if can_admin(permission.USER_MANAGE) %}
-                            <li><a href="/">用户列表</a></li>
+                            <li><a href="/">User List</a></li>
                         {% endif %}
                         {% if can_admin(permission.LOG_MANAGE) %}
-                            <li><a href="/loglist">用户日志</a></li>
-                        {% endif %}
-                        {% if can_admin(permission.HELP) %}
-                            <li><a href="/help">帮助中心</a></li>
+                            <li><a href="/loglist">User Log</a></li>
                         {% endif %}
                         <li role="separator" class="divider"></li>
-                        <li><a href="/logout">退出登录</a></li>
+                        <li><a href="/logout">Logout</a></li>
                     </ul>
                 {% endif %}
             </div>
@@ -43,16 +40,13 @@
                             <a class="dropdown-toggle" style="cursor: pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ current_user.name }}</a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 {% if can_admin(permission.USER_MANAGE) %}
-                                    <li><a href="/">用户列表</a></li>
+                                    <li><a href="/">User List</a></li>
                                 {% endif %}
                                 {% if can_admin(permission.LOG_MANAGE) %}
-                                    <li><a href="/loglist">用户日志</a></li>
-                                {% endif %}
-                                {% if can_admin(permission.HELP) %}
-                                    <li><a href="/help">帮助中心</a></li>
+                                    <li><a href="/loglist">User Log</a></li>
                                 {% endif %}
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/logout">退出登录</a></li>
+                                <li><a href="/logout">Logout</a></li>
                             </ul>
                         </li>
                     </ul>
